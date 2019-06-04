@@ -36,7 +36,6 @@ function ListArticles() {
   useEffect(() => {
     axios.get('http://localhost:8000/articles')
     .then((result) => {
-      console.log(result.data);
       setArticles(result.data);
     })
   }, [])

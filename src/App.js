@@ -4,7 +4,7 @@ import Menu from './Components/Menu/Menu';
 import Login from './Components/Login/Login';
 import Register from './Components/Register/Register';
 import ListArticles from './Components/ListArticles/ListArticles';
-import {Route} from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 function App() {
   return (
