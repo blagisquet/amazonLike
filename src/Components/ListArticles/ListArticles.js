@@ -1,8 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import Cart from '../Cart/Cart';
 import axios from 'axios';
+import { connect } from 'react-redux';
 
-function ListArticles() {
+//ACTIONS
+import {addArticle} from '../../Actions/cartAction';
+
+function ListArticles(props) {
 
   const [articles, setArticles] = useState([]);
   const [filterPrice, setFilterPrice] = useState(0);
@@ -65,7 +69,7 @@ function ListArticles() {
                     <td width="20%">{article.price} $</td>
                     <td width="10%">{article.quantity}</td>
                     <td width="20%">
-                     <button className="btn btn-primary btn-sm float-right">Add to cart</button>
+                     <button onClick={() => props.dispatch(addArticle({name: article.name, price: article.price}))} className="btn btn-primary btn-sm float-right">Add to cart</button>
                     </td>
                   </tr>
                 )
@@ -90,4 +94,4 @@ function ListArticles() {
   )
 }
 
-export default ListArticles;
+export default connect()(ListArticles);
