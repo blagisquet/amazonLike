@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Cart from '../Cart/Cart';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import _ from 'underscore';
 
 //ACTIONS
 import {addArticle} from '../../Actions/cartAction';
@@ -9,33 +10,9 @@ import {addArticle} from '../../Actions/cartAction';
 function ListArticles(props) {
 
   const [articles, setArticles] = useState([]);
-  const [filterPrice, setFilterPrice] = useState(0);
-  //0 - no filter
-  //1 - asc
-  //2 -dsc
-  const toggleFilterPrice = () => {
-    if(filterPrice === 0) {
-      setFilterPrice(1);
-    } else if (filterPrice === 1) {
-      setFilterPrice(2);
-    } else {
-      setFilterPrice(1);
-    }
-  }
-
-  useEffect(() => {
-    if(filterPrice === 1) {
-      axios.get('http://localhost:8000/articles/filter?price=asc')
-      .then((result) => {
-        setArticles(result.data);
-      })
-    } else if(filterPrice === 2) {
-      axios.get('http://localhost:8000/articles/filter?price=desc')
-      .then((result) => {
-        setArticles(result.data);
-      })
-    }
-  }, [filterPrice])
+  const [filterName, setFilterName] = useState([false]);
+  const [filterPrice, setFilterPrice] = useState([false]);
+  const [filterQuantity, setFilterQuantity] = useState([false]);
 
   useEffect(() => {
     axios.get('http://localhost:8000/articles')
@@ -43,6 +20,15 @@ function ListArticles(props) {
       setArticles(result.data);
     })
   }, [])
+
+  const filterArticle = (tag, [setFunc, param]) => {
+    if(param) {
+      setArticles(_.sortBy(articles, tag).reverse());
+    } else {
+      setArticles(_.sortBy(articles, tag)); 
+    }
+    setFunc(!param); 
+  }
 
   return(
     <div className="row mt-5">
@@ -55,9 +41,9 @@ function ListArticles(props) {
           <table className="table-striped">
             <thead>
               <tr>
-                <th>Name</th>
-                <th onClick={toggleFilterPrice}>Price</th>
-                <th>Quantity</th>
+                <th onClick={() => filterArticle('name', [setFilterName, filterName])}>Name</th>
+                <th onClick={() => filterArticle('price', [setFilterPrice, filterPrice])}>Price</th>
+                <th onClick={() => filterArticle('quantity', [setFilterQuantity, filterQuantity])}>Quantity</th>
                 <th></th>
               </tr>
             </thead>

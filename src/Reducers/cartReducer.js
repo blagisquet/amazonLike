@@ -1,4 +1,6 @@
-const cartReducer = (state = [], action) => {
+import { getCart} from '../Utils/storageCart';
+
+const cartReducer = (state = getCart(), action) => {
   switch(action.type) {
     case "ADD_ARTICLE":
       return [...state, action.payload];
